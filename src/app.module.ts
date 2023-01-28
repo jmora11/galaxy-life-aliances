@@ -3,6 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AliancesModule } from './aliances/aliances.module';
 import { CommonModule } from './common/common.module';
+import { UsersModule } from './users/users.module';
+import { MembersModule } from './members/members.module';
+import { MembersModule } from './members/members.module';
 import { MembersModule } from './members/members.module';
 
 @Module({
@@ -20,6 +23,7 @@ import { MembersModule } from './members/members.module';
     }),
     AliancesModule,
     CommonModule,
+    UsersModule,
     MembersModule,
   ],
 })

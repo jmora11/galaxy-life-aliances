@@ -1,12 +1,14 @@
+import { Member } from '../../members/entities/member.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'aliances' })
 export class Aliance {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -15,6 +17,12 @@ export class Aliance {
     unique: true,
   })
   name: string;
+
+  @OneToMany(() => Member, (member) => member.aliance, {
+    cascade: true,
+    eager: true,
+  })
+  members: Member[];
 
   @Column({
     type: 'text',
@@ -47,6 +55,16 @@ export class Aliance {
     default: 0,
   })
   wars_lost: number;
+
+  @Column('numeric', {
+    default: 10000,
+  })
+  war_points_next_level: number;
+
+  @Column('numeric', {
+    default: 0,
+  })
+  war_points: number;
 
   @BeforeInsert()
   checkNameInsert() {

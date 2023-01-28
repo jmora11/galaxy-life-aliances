@@ -14,7 +14,7 @@ export class CreateAlianceDto {
 
   @IsString()
   @IsOptional()
-  @IsIn(['without necessary members', 'in war', 'normal'])
+  @IsIn(['in war', 'normal'])
   status?: string;
 
   @IsString()
