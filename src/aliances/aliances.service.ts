@@ -6,7 +6,8 @@ import { CreateAlianceDto } from './dto/create-aliance.dto';
 import { UpdateAlianceDto } from './dto/update-aliance.dto';
 import { Aliance } from './entities/aliance.entity';
 import { validate as isUUID } from 'uuid';
-
+import { UsersService } from '../users/users.service';
+import { MembersService } from 'src/members/members.service';
 @Injectable()
 export class AliancesService {
   private readonly logger = new Logger('AliancesService');
@@ -14,10 +15,29 @@ export class AliancesService {
   constructor(
     @InjectRepository(Aliance)
     private readonly alianceRepository: Repository<Aliance>,
+
+    private readonly memberService: MembersService,
+    private readonly userService: UsersService,
   ) {}
 
   async create(createAlianceDto: CreateAlianceDto) {
-    const aliance = this.alianceRepository.create(createAlianceDto);
+    const { user_id, ...restAlianceDto } = createAlianceDto;
+
+    const user = await this.userService.findOne(user_id);
+    const dtoMember = {
+      nick_name: user.nick_name,
+      level: user.level,
+      war_points: 0,
+      role: 'General',
+    };
+
+    const member = await this.memberService.create(dtoMember);
+
+    const aliance = this.alianceRepository.create({
+      ...restAlianceDto,
+      members: [member],
+    });
+
     await this.alianceRepository.save(aliance).catch((error) => {
       this.logger.error('🚀 ~ Error creating aliance', error);
       throw error;

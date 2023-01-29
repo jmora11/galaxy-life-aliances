@@ -5,8 +5,6 @@ import { AliancesModule } from './aliances/aliances.module';
 import { CommonModule } from './common/common.module';
 import { UsersModule } from './users/users.module';
 import { MembersModule } from './members/members.module';
-import { MembersModule } from './members/members.module';
-import { MembersModule } from './members/members.module';
 
 @Module({
   imports: [

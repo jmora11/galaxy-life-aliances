@@ -16,3 +16,14 @@ docker-compose up -d
 
 6. npm run start:dev
 
+
+psql aliances postgres
+
+
+truncate aliances CASCADE;
+truncate members CASCADE;
+truncate users CASCADE;
+
+select * from aliances;
+select * from members;
+select * from users;

@@ -1,6 +1,6 @@
 import { Aliance } from 'src/aliances/entities/aliance.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity({ name: 'members' })
 export class Member extends User {

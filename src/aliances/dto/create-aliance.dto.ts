@@ -1,16 +1,23 @@
+import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsIn,
   IsNumber,
   IsOptional,
   IsPositive,
   IsString,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+import { CreateMemberDto } from 'src/members/dto/create-member.dto';
 
 export class CreateAlianceDto {
   @IsString()
   @MinLength(2)
   name: string;
+
+  @IsString()
+  user_id: string;
 
   @IsString()
   @IsOptional()
