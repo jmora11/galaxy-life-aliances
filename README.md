@@ -27,3 +27,5 @@ truncate users CASCADE;
 select * from aliances;
 select * from members;
 select * from users;
+
+pendins: Do update aliace to return relations to members and users
