@@ -1,14 +1,18 @@
 import { Aliance } from 'src/aliances/entities/aliance.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'members' })
-export class Member extends User {
-  @Column()
-  nick_name: string;
-
-  @Column()
-  level: number;
+export class Member {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   war_points: number;
@@ -20,4 +24,8 @@ export class Member extends User {
     onDelete: 'CASCADE',
   })
   aliance: Aliance;
+
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
 }

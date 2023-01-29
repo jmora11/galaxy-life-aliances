@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
@@ -16,8 +17,11 @@ export class MembersService {
     private readonly memberRepository: Repository<Member>,
   ) {}
 
-  async create(createMemberDto: CreateMemberDto) {
-    const member = this.memberRepository.create(createMemberDto);
+  async create(createMemberDto: CreateMemberDto, user: User) {
+    const member = this.memberRepository.create({
+      ...createMemberDto,
+      user,
+    });
     await this.memberRepository.save(member).catch((error) => {
       this.logger.error('🚀 ~ Error creating member', error);
       throw error;
@@ -26,7 +30,7 @@ export class MembersService {
     return member;
   }
 
-  async findAll(paginationDto: PaginationDto) {
+  /* async findAll(paginationDto: PaginationDto) {
     const { limit = 10, offset = 0 } = paginationDto;
     return this.memberRepository.find({
       take: limit,
@@ -64,5 +68,5 @@ export class MembersService {
     const member = await this.findOne(id);
     await this.memberRepository.remove(member);
     return;
-  }
+  } */
 }

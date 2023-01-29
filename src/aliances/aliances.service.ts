@@ -25,13 +25,11 @@ export class AliancesService {
 
     const user = await this.userService.findOne(user_id);
     const dtoMember = {
-      nick_name: user.nick_name,
-      level: user.level,
       war_points: 0,
       role: 'General',
     };
 
-    const member = await this.memberService.create(dtoMember);
+    const member = await this.memberService.create(dtoMember, user);
 
     const aliance = this.alianceRepository.create({
       ...restAlianceDto,
@@ -51,16 +49,43 @@ export class AliancesService {
     return this.alianceRepository.find({
       take: limit,
       skip: offset,
+      relations: {
+        members: {
+          user: true,
+        },
+      },
     });
   }
 
   async findOne(term: string) {
-    let aliance: Aliance;
+    let aliance: any;
 
     if (isUUID(term)) {
-      aliance = await this.alianceRepository.findOneBy({ id: term });
+      aliance = await this.alianceRepository.find({
+        where: {
+          id: term,
+        },
+        join: {
+          alias: 'aliance',
+          leftJoinAndSelect: {
+            members: 'aliance.members',
+            user: 'members.user',
+          },
+        },
+      });
     } else {
-      aliance = await this.alianceRepository.findOneBy({ name: term });
+      aliance = await this.alianceRepository.find({
+        where: {
+          name: term,
+        },
+        join: {
+          alias: 'aliance',
+          leftJoinAndSelect: {
+            members: 'aliance.members',
+            user: 'members.user',
+          },
+        },
+      });
     }
 
     if (!aliance) {
